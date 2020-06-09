@@ -1,3 +1,4 @@
+import 'package:ecommerceapp/pages/homeScreen.dart';
 import 'package:ecommerceapp/pages/login.dart';
 import 'package:ecommerceapp/providers/modalHud.dart';
 import 'package:ecommerceapp/widgets/customButton.dart';
@@ -15,11 +16,9 @@ class SignUpPage extends StatelessWidget {
   static String id = 'SignUpPage';
   String _email, _password;
   static final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-      color: ,
       inAsyncCall: Provider.of<ModalHud>(context).isLoading,
       child: Stack(
         children: <Widget>[
@@ -102,6 +101,7 @@ class SignUpPage extends StatelessWidget {
                                             final authResult = await _auth
                                                 .signUp(_email, _password);
                                             modalHud.changeIsLoading(false);
+                                            Navigator.pushNamed(context, HomeScreen.id);
                                           } catch (e) {
                                             modalHud.changeIsLoading(false);
                                             Scaffold.of(context)
@@ -147,7 +147,7 @@ class SignUpPage extends StatelessWidget {
                                               context, LoginPage.id);
                                         },
                                         child: Text(
-                                          'Log In',
+                                          ' Log In',
                                           style: TextStyle(
                                               color: Color.fromRGBO(
                                                   227, 73, 124, 1),
@@ -156,6 +156,7 @@ class SignUpPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
+
                                 ],
                               ),
                             )),

@@ -1,4 +1,6 @@
+import 'package:ecommerceapp/pages/adminControleCenter.dart';
 import 'package:ecommerceapp/pages/signup.dart';
+import 'package:ecommerceapp/providers/adminMode.dart';
 import 'package:ecommerceapp/providers/modalHud.dart';
 import 'package:ecommerceapp/services/auth.dart';
 import 'package:ecommerceapp/widgets/customButton.dart';
@@ -8,12 +10,15 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 
+import 'homeScreen.dart';
+
 // ignore: must_be_immutable
 class LoginPage extends StatelessWidget {
   static String id = 'LoginPage';
   static final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   String _email, _password;
   final _auth = Auth();
+  final adminPassword = 'admin123456';
 
   @override
   Widget build(BuildContext context) {
@@ -91,34 +96,8 @@ class LoginPage extends StatelessWidget {
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      onPressed: () async {
-                                        final modalHud =
-                                            Provider.of<ModalHud>(context, listen: false);
-                                        modalHud.changeIsLoading(true);
-                                        if (globalKey.currentState.validate()) {
-                                          try {
-                                            globalKey.currentState.save();
-                                            final authResult = await _auth
-                                                .login(_email, _password);
-                                            modalHud.changeIsLoading(false);
-                                          } catch (e) {
-                                            modalHud.changeIsLoading(false);
-                                            Scaffold.of(context)
-                                                .showSnackBar(SnackBar(
-                                              backgroundColor: Color.fromRGBO(
-                                                  255, 255, 255, 0.2),
-                                              content: Text(
-                                                e.message,
-                                                style: TextStyle(
-                                                    color: Color.fromRGBO(
-                                                        227, 73, 124, 1),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ));
-                                          }
-                                        }
-                                        modalHud.changeIsLoading(false);
+                                      onPressed: () {
+                                        _validate(context);
                                       },
                                       gradient: LinearGradient(
                                         colors: <Color>[
@@ -145,13 +124,24 @@ class LoginPage extends StatelessWidget {
                                           Navigator.pop(context);
                                         },
                                         child: Text(
-                                          'Sign Up',
+                                          ' Sign Up',
                                           style: TextStyle(
                                               color: Color.fromRGBO(
                                                   227, 73, 124, 1),
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Column(
+                                    children: <Widget>[
+                                      createAdminUserText(
+                                          Provider.of<AdminMode>(context)
+                                              .isAdmin,
+                                          context),
                                     ],
                                   ),
                                 ],
@@ -168,4 +158,90 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+
+  void _validate(BuildContext context) async{
+    final modalHud = Provider.of<ModalHud>(context,listen: false);
+    modalHud.changeIsLoading(true);
+    if (globalKey.currentState.validate()) {
+      globalKey.currentState.save();
+      if (Provider.of<AdminMode>(context,listen: false).isAdmin) {
+        if (_password == adminPassword) {
+          try {
+            await _auth.login(_email, _password);
+            modalHud.changeIsLoading(false);
+            Navigator.pushNamed(context, AdminControlCenter.id);
+          } catch (e) {
+            modalHud.changeIsLoading(false);
+            Scaffold.of(context).showSnackBar(SnackBar(
+              backgroundColor: Color.fromRGBO(255, 255, 255, 0.2),
+              content: Text(
+                e.message,
+                style: TextStyle(
+                    color: Color.fromRGBO(227, 73, 124, 1),
+                    fontWeight: FontWeight.bold),
+              ),
+            ));
+          }
+        } else {
+          modalHud.changeIsLoading(false);
+          Scaffold.of(context).showSnackBar(SnackBar(
+            backgroundColor: Color.fromRGBO(255, 255, 255, 0.2),
+            content: Text(
+              "Incorrect Password",
+              style: TextStyle(
+                  color: Color.fromRGBO(227, 73, 124, 1),
+                  fontWeight: FontWeight.bold),
+            ),
+          ));
+        }
+      } else {
+        try {
+          final authResult = await _auth.login(_email, _password);
+          modalHud.changeIsLoading(false);
+          Navigator.pushNamed(context, HomeScreen.id);
+        } catch (e) {
+
+          modalHud.changeIsLoading(false);
+
+          Scaffold.of(context).showSnackBar(SnackBar(
+            backgroundColor: Color.fromRGBO(255, 255, 255, 0.2),
+            content: Text(
+              e.message,
+              style: TextStyle(
+                  color: Color.fromRGBO(227, 73, 124, 1),
+                  fontWeight: FontWeight.bold),
+            ),
+          ));
+        }
+      }
+    }
+    modalHud.changeIsLoading(false);
+  }
+}
+
+Widget createAdminUserText(bool isAdmin, BuildContext context) {
+  if (!isAdmin) {
+    return InkWell(
+      onTap: () {
+        final adminMode = Provider.of<AdminMode>(context, listen: false);
+        adminMode.changeIsAdmin(true);
+      },
+      child: Text(
+        'I\'m an admin',
+        style: TextStyle(
+            color: Color.fromRGBO(72, 93, 242, 1), fontWeight: FontWeight.bold),
+      ),
+    );
+  } else
+    return InkWell(
+      onTap: () {
+        final adminMode = Provider.of<AdminMode>(context, listen: false);
+        adminMode.changeIsAdmin(false);
+      },
+      child: Text(
+        'I\'m a user',
+        style: TextStyle(
+            color: Color.fromRGBO(72, 93, 242, 1), fontWeight: FontWeight.bold),
+      ),
+    );
 }
