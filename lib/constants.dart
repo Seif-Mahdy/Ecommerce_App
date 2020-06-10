@@ -1,3 +1,9 @@
 import 'package:flutter/material.dart';
 
-const backGroundColor = Color.fromARGB(100, 41, 41, 41);
+const KBackGroundColor = Color.fromARGB(100, 41, 41, 41);
+const KProductCollectionName = 'Products';
+const KProductName = 'productName';
+const KProductPrice = 'productPrice';
+const KProductDescription = 'productDescription';
+const KProductCategory = 'productCategory';
+const KProductImageLocation = 'productImageLocation';
