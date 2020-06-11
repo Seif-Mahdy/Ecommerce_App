@@ -196,7 +196,7 @@ class LoginPage extends StatelessWidget {
         }
       } else {
         try {
-          final authResult = await _auth.login(_email, _password);
+          final authResult = await _auth.login(_email.trim(), _password.trim());
           modalHud.changeIsLoading(false);
           Navigator.pushNamed(context, HomeScreen.id);
         } catch (e) {

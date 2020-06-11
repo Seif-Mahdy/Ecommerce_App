@@ -7,3 +7,7 @@ const KProductPrice = 'productPrice';
 const KProductDescription = 'productDescription';
 const KProductCategory = 'productCategory';
 const KProductImageLocation = 'productImageLocation';
+const KMobiles = 'mobiles';
+const KTablets = 'tablets';
+const KWatches = 'watches';
+const KLaptops = 'laptops';

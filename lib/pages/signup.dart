@@ -99,7 +99,7 @@ class SignUpPage extends StatelessWidget {
                                           try {
                                             globalKey.currentState.save();
                                             final authResult = await _auth
-                                                .signUp(_email, _password);
+                                                .signUp(_email.trim(), _password.trim());
                                             modalHud.changeIsLoading(false);
                                             Navigator.pushNamed(context, HomeScreen.id);
                                           } catch (e) {
