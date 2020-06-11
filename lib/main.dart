@@ -1,6 +1,7 @@
 import 'package:ecommerceapp/pages/addProduct.dart';
 import 'package:ecommerceapp/pages/adminControleCenter.dart';
-import 'package:ecommerceapp/pages/editProduct.dart';
+import 'package:ecommerceapp/pages/editProducts.dart';
+import 'package:ecommerceapp/pages/manageProducts.dart';
 import 'package:ecommerceapp/pages/homeScreen.dart';
 import 'package:ecommerceapp/pages/login.dart';
 import 'package:ecommerceapp/pages/signup.dart';
@@ -36,8 +37,9 @@ class MyApp extends StatelessWidget {
             AdminControlCenter.id: (context) =>AdminControlCenter(),
             HomeScreen.id: (context) => HomeScreen(),
             AddProduct.id: (context) => AddProduct(),
-            EditProduct.id: (context) => EditProduct(),
+            ManageProducts.id: (context) => ManageProducts(),
             ViewOrders.id: (context) => ViewOrders(),
+            EditProduct.id: (context) => EditProduct(),
           },
       ),
     );

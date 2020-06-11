@@ -1,6 +1,6 @@
 import 'package:ecommerceapp/constants.dart';
 import 'package:ecommerceapp/pages/addProduct.dart';
-import 'package:ecommerceapp/pages/editProduct.dart';
+import 'package:ecommerceapp/pages/manageProducts.dart';
 import 'package:ecommerceapp/pages/viewOrders.dart';
 import 'package:ecommerceapp/widgets/customButton.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class AdminControlCenter extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CustomButton(
-              width: 120,
+              width: 150,
               height: 57,
               onPressed: () {
                 Navigator.pushNamed(context, AddProduct.id);
@@ -38,10 +38,10 @@ class AdminControlCenter extends StatelessWidget {
               height: 15,
             ),
             CustomButton(
-              width: 120,
+              width: 150,
               height: 57,
               onPressed: () {
-                Navigator.pushNamed(context, EditProduct.id);
+                Navigator.pushNamed(context, ManageProducts.id);
               },
               gradient: LinearGradient(
                 colors: <Color>[
@@ -50,7 +50,7 @@ class AdminControlCenter extends StatelessWidget {
                 ],
               ),
               child: Text(
-                'Edit Product',
+                'Manage Products',
                 style:
                 TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
@@ -59,7 +59,7 @@ class AdminControlCenter extends StatelessWidget {
               height: 15,
             ),
             CustomButton(
-              width: 120,
+              width: 150,
               height: 57,
               onPressed: () {
                 Navigator.pushNamed(context, ViewOrders.id);

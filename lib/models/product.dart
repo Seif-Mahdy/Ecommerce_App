@@ -4,9 +4,11 @@ class Product {
   String pDescription;
   String pCategory;
   String pImageLocation;
+  String pId;
 
   Product(
-      {this.pName,
+      {this.pId,
+      this.pName,
       this.pCategory,
       this.pDescription,
       this.pPrice,

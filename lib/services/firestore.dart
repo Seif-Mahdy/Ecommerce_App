@@ -2,35 +2,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerceapp/constants.dart';
 import 'package:ecommerceapp/models/product.dart';
 
-class Store
-{
+class Store {
   final Firestore _fireStore = Firestore.instance;
-  addProduct(Product product){
+
+  addProduct(Product product) {
     _fireStore.collection(KProductCollectionName).add(
-      {
-        KProductName : product.pName,
-        KProductPrice : product.pPrice,
-        KProductCategory : product.pCategory,
-        KProductDescription : product.pDescription,
-        KProductImageLocation : product.pImageLocation,
-      }
+        {
+          KProductName: product.pName,
+          KProductPrice: product.pPrice,
+          KProductCategory: product.pCategory,
+          KProductDescription: product.pDescription,
+          KProductImageLocation: product.pImageLocation,
+        }
     );
   }
-  Future<List<Product>> loadProducts()async
+
+  Stream<QuerySnapshot> loadProducts() {
+    return _fireStore.collection(KProductCollectionName).snapshots();
+  }
+  deleteProduct(documentId)
   {
-   var snapshot = await _fireStore.collection(KProductCollectionName).getDocuments();
-   List<Product> products = [];
-   for (var doc in snapshot.documents)
-     {
-       var data = doc.data;
-       products.add(Product(
-         pName: data[KProductName],
-         pPrice: data[KProductPrice],
-         pCategory: data[KProductCategory],
-         pDescription: data[KProductDescription],
-         pImageLocation: data[KProductImageLocation],
-       ));
-     }
-   return products;
+    _fireStore.collection(KProductCollectionName).document(documentId).delete();
+  }
+  editProduct(data , documentId)
+  {
+    _fireStore.collection(KProductCollectionName).document(documentId).updateData(data);
   }
 }
